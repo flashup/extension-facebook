@@ -154,7 +154,7 @@ public class FacebookExtension extends Extension {
 		}
 	}
 
-	private void servicesInit() throws ExceptionInInitializerError
+	private static void servicesInit() throws ExceptionInInitializerError
 	{
 		requestDialog = new GameRequestDialog(mainActivity);
 		shareDialog = new ShareDialog(mainActivity);
