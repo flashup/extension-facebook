@@ -64,9 +64,98 @@ public class FacebookExtension extends Extension {
 	static AppEventsLogger logger;
 	static final String TAG = "FACEBOOK-EXTENSION";
 
-	public FacebookExtension() {
+	public FacebookExtension() {}
 
-		//FacebookSdk.sdkInitialize(mainContext);
+	public static Object wrap(Object o) {
+		if (o == null) {
+			return null;
+		}
+		if (o instanceof JSONArray || o instanceof JSONObject) {
+			return o;
+		}
+		if (o.equals(null)) {
+			return o;
+		}
+		try {
+			if (o instanceof Collection) {
+				return new JSONArray((Collection) o);
+			} else if (o.getClass().isArray()) {
+				JSONArray arr = new JSONArray();
+				for (Object e : (Object[]) o) {
+					arr.put(e);
+				}
+				return arr;
+			}
+			if (o instanceof Map) {
+				return new JSONObject((Map) o);
+			}
+			if (o instanceof Boolean ||
+				o instanceof Byte ||
+				o instanceof Character ||
+				o instanceof Double ||
+				o instanceof Float ||
+				o instanceof Integer ||
+				o instanceof Long ||
+				o instanceof Short ||
+				o instanceof String) {
+				return o;
+			}
+			if (o.getClass().getPackage().getName().startsWith("java.")) {
+				return o.toString();
+			}
+		} catch (Exception ignored) {
+		}
+		return null;
+	}
+
+	// Static methods interface
+
+
+
+	public static void init(HaxeObject _callbacks) {
+
+		callbacks = new SecureHaxeObject(_callbacks, mainActivity, TAG);
+		
+		try {
+			servicesInit();
+
+			accessTokenTracker = new AccessTokenTracker() {
+				@Override
+				protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+					if (callbacks!=null) {
+						if (currentAccessToken!=null) {
+							callbacks.call1("_onTokenChange", currentAccessToken.getToken());
+						} else {
+							callbacks.call1("_onTokenChange", "");
+						}
+					}
+				}
+			};
+
+			mainActivity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					try 
+					{
+						AccessToken token = AccessToken.getCurrentAccessToken();
+						if (token!=null) {
+							callbacks.call1("_onTokenChange", token.getToken());
+						} else {
+							callbacks.call1("_onTokenChange", "");
+						}
+					} catch (ExceptionInInitializerError error) {
+						callbacks.call1("_onTokenChange", "");
+					}
+				}
+			});
+		
+		} catch (ExceptionInInitializerError error) {
+			callbacks.call1("_onTokenChange", "");
+		}
+	}
+
+	private static void servicesInit() throws ExceptionInInitializerError
+	{
 		requestDialog = new GameRequestDialog(mainActivity);
 		shareDialog = new ShareDialog(mainActivity);
 
@@ -170,91 +259,6 @@ public class FacebookExtension extends Extension {
 			}
 
 		});
-
-	}
-
-	public static Object wrap(Object o) {
-		if (o == null) {
-			return null;
-		}
-		if (o instanceof JSONArray || o instanceof JSONObject) {
-			return o;
-		}
-		if (o.equals(null)) {
-			return o;
-		}
-		try {
-			if (o instanceof Collection) {
-				return new JSONArray((Collection) o);
-			} else if (o.getClass().isArray()) {
-				JSONArray arr = new JSONArray();
-				for (Object e : (Object[]) o) {
-					arr.put(e);
-				}
-				return arr;
-			}
-			if (o instanceof Map) {
-				return new JSONObject((Map) o);
-			}
-			if (o instanceof Boolean ||
-				o instanceof Byte ||
-				o instanceof Character ||
-				o instanceof Double ||
-				o instanceof Float ||
-				o instanceof Integer ||
-				o instanceof Long ||
-				o instanceof Short ||
-				o instanceof String) {
-				return o;
-			}
-			if (o.getClass().getPackage().getName().startsWith("java.")) {
-				return o.toString();
-			}
-		} catch (Exception ignored) {
-		}
-		return null;
-	}
-
-	// Static methods interface
-
-	public static void init(HaxeObject _callbacks) {
-
-		callbacks = new SecureHaxeObject(_callbacks, mainActivity, TAG);
-		
-		try {
-			accessTokenTracker = new AccessTokenTracker() {
-				@Override
-				protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-					if (callbacks!=null) {
-						if (currentAccessToken!=null) {
-							callbacks.call1("_onTokenChange", currentAccessToken.getToken());
-						} else {
-							callbacks.call1("_onTokenChange", "");
-						}
-					}
-				}
-			};
-
-			mainActivity.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					try 
-					{
-						AccessToken token = AccessToken.getCurrentAccessToken();
-						if (token!=null) {
-							callbacks.call1("_onTokenChange", token.getToken());
-						} else {
-							callbacks.call1("_onTokenChange", "");
-						}
-					} catch (ExceptionInInitializerError error) {
-						callbacks.call1("_onTokenChange", "");
-					}
-				}
-			});
-		
-		} catch (ExceptionInInitializerError error) {
-			callbacks.call1("_onTokenChange", "");
-		}
 	}
 
 	public static void logout() {
