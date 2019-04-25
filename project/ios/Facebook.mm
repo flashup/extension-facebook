@@ -66,10 +66,16 @@ namespace extension_facebook {
 		[FBSDKAppEvents logEvent:nsName parameters:params];
 	}
 	
-	void logPurchase(double value, std::string currency) {
-		//NSLog(@"Facebook: logPurchase value= %@, currency= %@", value, currency);
+	void logPurchase(double value, std::string currency, std::string payload) {
+		NSLog(@"Facebook: logPurchase value= %@, currency= %@, params= %@", value, currency, params);
         NSString * nsCurrency = [[NSString alloc] initWithUTF8String:currency.c_str()];
-		[FBSDKAppEvents logPurchase:value currency:nsCurrency];
+		
+		NSString * nsPayload = [[NSString alloc] initWithUTF8String:payload.c_str()];
+		NSData * jsonData = [nsPayload dataUsingEncoding:NSUTF8StringEncoding];
+		NSError * error = nil;
+		NSDictionary * params = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+		
+		[FBSDKAppEvents logPurchase:value currency:nsCurrency, parameters:params];
 	}
 	
 	void logOut() {

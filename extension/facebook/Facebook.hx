@@ -388,7 +388,7 @@ class Facebook extends TaskExecutor {
 			FacebookCFFI.trackPurchase(purchaseAmount, currency, parameters);
 		#end
 		#if ios
-			FacebookCFFI.logPurchase(purchaseAmount, currency);
+			FacebookCFFI.logPurchase(purchaseAmount, currency, parameters);
 		#end
 	}
 }
