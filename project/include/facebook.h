@@ -35,7 +35,7 @@ namespace extension_facebook {
 
     void setDebug();
     void logEvent(std::string name, std::string payload);
-    void logPurchase(double val, std::string currency);
+    void logPurchase(double val, std::string currency, std::string params);
     
 	void onLoginSuccessCallback();
 	void onLoginCancelCallback();

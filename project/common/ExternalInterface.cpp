@@ -91,7 +91,7 @@ static value extension_facebook_logPurchase(double val, value currency, value pa
 	);
 	return alloc_null();
 }
-DEFINE_PRIM(extension_facebook_logPurchase, 2);
+DEFINE_PRIM(extension_facebook_logPurchase, 3);
 
 static value extension_facebook_logEvent(value name, value payload) {
 	extension_facebook::logEvent(
