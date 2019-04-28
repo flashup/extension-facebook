@@ -67,7 +67,7 @@ namespace extension_facebook {
 	}
 	
 	void logPurchase(double value, std::string currency, std::string payload) {
-		NSLog(@"Facebook: logPurchase value= %@, currency= %@, params= %@", value, currency, params);
+		NSLog(@"Facebook: logPurchase value= %@, currency= %@, params= %@", value, currency, payload);
         NSString * nsCurrency = [[NSString alloc] initWithUTF8String:currency.c_str()];
 		
 		NSString * nsPayload = [[NSString alloc] initWithUTF8String:payload.c_str()];
@@ -75,7 +75,7 @@ namespace extension_facebook {
 		NSError * error = nil;
 		NSDictionary * params = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
 		
-		[FBSDKAppEvents logPurchase:value currency:nsCurrency, parameters:params];
+		[FBSDKAppEvents logPurchase:value currency:nsCurrency parameters:params];
 	}
 	
 	void logOut() {
