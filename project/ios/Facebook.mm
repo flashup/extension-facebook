@@ -67,6 +67,8 @@ namespace extension_facebook {
 	}
 	
 	void logPurchase(double value, std::string currency, std::string payload) {
+		NSLog(@"Facebook: logPurchase payload= %s", payload.c_str());
+		
         NSString * nsCurrency = [[NSString alloc] initWithUTF8String:currency.c_str()];
 		
 		NSString * nsPayload = [[NSString alloc] initWithUTF8String:payload.c_str()];
