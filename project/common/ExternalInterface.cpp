@@ -83,9 +83,9 @@ static value extension_facebook_logout() {
 }
 DEFINE_PRIM(extension_facebook_logout, 0);
 
-static value extension_facebook_logPurchase(double val, value currency, value params) {
+static value extension_facebook_logPurchase(value val, value currency, value params) {
 	extension_facebook::logPurchase(
-		val,
+		val_get_double(val),
 		safe_val_string(currency),
 		safe_val_string(params)
 	);
