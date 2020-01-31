@@ -1,6 +1,7 @@
 #import <FBSDKShareKit/FBSDKAppInviteDialog.h>
 #import <FBSDKShareKit/FBSDKGameRequestDialog.h>
 #import <FBSDKShareKit/FBSDKSharing.h>
+#import <UIKit/UIKit.h>
 
 @class CallbacksDelegate;
 
@@ -13,4 +14,7 @@
 @end
 
 @interface NMEAppDelegate : NSObject <UIApplicationDelegate>
+@end
+
+@interface NMEAppDelegate (CallbacksDelegate)
 @end

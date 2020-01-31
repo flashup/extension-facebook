@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 
-#include <Facebook.h>
+#include <facebook.h>
 
 #define safe_alloc_string(a) (alloc_string(a!=NULL ? a : ""))
 #define safe_val_call0(func) if (func!=NULL) val_call0(func->get())
@@ -92,6 +92,12 @@ static value extension_facebook_logPurchase(value val, value currency, value par
 	return alloc_null();
 }
 DEFINE_PRIM(extension_facebook_logPurchase, 3);
+
+static value extension_facebook_activateApp() {
+	extension_facebook::activateApp();
+	return alloc_null();
+}
+DEFINE_PRIM(extension_facebook_activateApp, 0);
 
 static value extension_facebook_logEvent(value name, value payload) {
 	extension_facebook::logEvent(

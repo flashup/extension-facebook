@@ -391,4 +391,11 @@ class Facebook extends TaskExecutor {
 			FacebookCFFI.logPurchase(purchaseAmount, currency, parameters);
 		#end
 	}
+
+	public function activateApp()
+	{
+		#if (android || ios)
+		FacebookCFFI.activateApp();
+		#end
+	}
 }

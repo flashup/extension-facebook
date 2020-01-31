@@ -1,7 +1,11 @@
 package extension.facebook.android;
 
 import haxe.Json;
+#if (openfl < "4.0.0")
 import openfl.utils.JNI;
+#else
+import lime.system.JNI;
+#end
 
 @:build(ShortCuts.mirrors())
 class FacebookExtension {
@@ -186,5 +190,14 @@ class FacebookExtension {
 			"(FLjava/lang/String;Ljava/lang/String;)V"
 		);
 		JNI.callStatic(fn, [purchaseAmount, currency, parameters]);
+	}
+
+	public static function activateApp() {
+		var fn = JNI.createStaticMethod(
+			"org.haxe.extension.facebook.FacebookExtension",
+			"activateApp",
+			"()V"
+		);
+		JNI.callStatic(fn, []);
 	}
 }

@@ -11,7 +11,7 @@
 #import <FBSDKShareKit/FBSDKShareDialog.h>
 #import <FBSDKShareKit/FBSDKShareLinkContent.h>
 
-#import <Facebook.h>
+#import <facebook.h>
 
 namespace extension_facebook {
 
@@ -81,6 +81,12 @@ namespace extension_facebook {
 		[FBSDKAppEvents logPurchase:value currency:nsCurrency parameters:params];
 	}
 	
+	void activateApp() {
+        NSLog(@"Facebook: activateApp");
+
+		[FBSDKAppEvents activateApp];
+	}
+
 	void logOut() {
 		[login logOut];
 	}

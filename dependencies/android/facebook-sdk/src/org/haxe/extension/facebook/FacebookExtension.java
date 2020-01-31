@@ -506,11 +506,18 @@ public class FacebookExtension extends Extension {
         );
     }
 
+    public static void activateApp()
+    {
+        logger.activateApp(mainContext);
+    }
+
 	public static void trackPurchase(float purchaseAmount, String currency, String parameters)
 	{
-		// Bundle parameters
-		Bundle bundle = getAnalyticsBundleFromJson(parameters);
-		logger.logPurchase(BigDecimal.valueOf(purchaseAmount), Currency.getInstance(currency), bundle);
+        Log.d(TAG, "trackPurchase: " + purchaseAmount + ", " + currency);
+
+        // Bundle parameters
+		// Bundle bundle = getAnalyticsBundleFromJson(parameters);
+		logger.logPurchase(BigDecimal.valueOf(purchaseAmount), Currency.getInstance(currency));
 	}
 
 	// !Static methods interface
